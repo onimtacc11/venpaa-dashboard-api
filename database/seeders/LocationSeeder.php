@@ -1,0 +1,61 @@
+<?php
+
+namespace Database\Seeders;
+
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class LocationSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('locations')->insert([
+            [
+                'loca_code' => 'L001',
+                'loca_name' => 'HeadBranch',
+                'location_type' => 'Branch',
+                'delivery_address' => 'Jaffna',
+                'is_active' => 1,
+                'logged_in' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'loca_code' => 'L002',
+                'loca_name' => 'Colombo',
+                'location_type' => 'Branch',
+                'delivery_address' => 'Wallewatthe',
+                'is_active' => 1,
+                'logged_in' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'loca_code' => 'L003',
+                'loca_name' => 'Colombo',
+                'location_type' => 'Exhibition',
+                'delivery_address' => 'BMICH',
+                'is_active' => 1,
+                'logged_in' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'loca_code' => 'L004',
+                'loca_name' => 'Jaffna Trade Fair',
+                'location_type' => 'Exhibition',
+                'delivery_address' => 'Jaffna',
+                'is_active' => 1,
+                'logged_in' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+    }
+}

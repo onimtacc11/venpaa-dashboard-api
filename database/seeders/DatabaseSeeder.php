@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\LocationSeeder;
 use Database\Seeders\AdminUserSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            LocationSeeder::class,
             AdminUserSeeder::class,
         ]);
     }
