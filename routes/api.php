@@ -31,16 +31,25 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::group(['prefix' => 'v1'], function () {
-    #location routes
-    Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'locations'], function () {
+
+// Middleware doesn't work here
+// Route::group(['prefix' => 'v1'], function () {
+//     #author routes
+//     Route::group(['prefix' => 'authors'], function () {
+//         Route::get('/', [AuthorController::class, 'index']);
+//     });
+// });
+
+Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
+    // location routes
+    Route::group(['prefix' => 'locations'], function () {
         Route::get('/', [LocationController::class, 'index']);
         Route::post('/', [LocationController::class, 'store']);
         Route::put('/{id}', [LocationController::class, 'update']);
     });
 
-    #author routes
-    Route::group(['middleware' => ['auth:sanctum'], 'prefix' => '/authors'], function () {
+    // author routes
+    Route::group(['prefix' => 'author'], function () {
         Route::get('/', [AuthorController::class, 'index']);
     });
 });
