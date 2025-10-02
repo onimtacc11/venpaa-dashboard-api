@@ -29,7 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::get('/locations', [LocationController::class, 'index']);
-    Route::post('/locations', [LocationController::class, 'store']);
-    Route::put('/locations/{id}', [LocationController::class, 'update']);
+    Route::prefix('locations')->group(function () {
+        Route::get('/', [LocationController::class, 'index']);
+        Route::post('/', [LocationController::class, 'store']);
+        Route::get('/{loca_code}', [LocationController::class, 'show']);
+        Route::put('/{loca_code}', [LocationController::class, 'update']);
+        Route::get('/generate-code', [LocationController::class, 'generateCode']);
+    });
 });
