@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LocationRequest extends FormRequest
@@ -13,7 +14,7 @@ class LocationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +25,16 @@ class LocationRequest extends FormRequest
     public function rules()
     {
         return [
-            'code_name' => 'required|unique:locations,code',
-            'name' => 'required',
+            'loca_code' => 'required|string|max:255',
+            'loca_name' => 'required|string|max:255',
+            'location_type' => [
+                'required',
+                'string',
+                Rule::in(['Branch', 'Exhibition']),
+            ],
+            'delivery_address' => 'nullable|string|max:255',
+            'is_active' => 'boolean',
+            'logged_in' => 'boolean',
         ];
     }
 }
