@@ -10,7 +10,10 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::all();
-
-        return response()->json($authors);
+        return response()->json([
+            'success' => true,
+            'message' => 'success',
+            'data' => $authors
+        ], 200);
     }
 }
