@@ -45,7 +45,9 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'locations'], function () {
         Route::get('/', [LocationController::class, 'index']);
         Route::post('/', [LocationController::class, 'store']);
-        Route::put('/{id}', [LocationController::class, 'update']);
+        Route::get('/{loca_code}', [LocationController::class, 'show']);
+        Route::put('/{loca_code}', [LocationController::class, 'update']);
+        Route::get('/generate-code', [LocationController::class, 'generateCode']);
     });
 
     // author routes
