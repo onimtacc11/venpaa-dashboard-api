@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
 
 /*
@@ -28,8 +29,31 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', function (Request $request) {
         return $request->user();
     });
-
-    Route::get('/locations', [LocationController::class, 'index']);
-    Route::post('/locations', [LocationController::class, 'store']);
-    Route::put('/locations/{id}', [LocationController::class, 'update']);
 });
+
+Route::group(['prefix' => 'v1'], function () {
+    #location routes
+    Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'locations'], function () {
+        Route::get('/', [LocationController::class, 'index']);
+        Route::post('/', [LocationController::class, 'store']);
+        Route::put('/{id}', [LocationController::class, 'update']);
+    });
+
+    #author routes
+    Route::group(['middleware' => ['auth:sanctum'], 'prefix' => '/authors'], function () {
+        Route::get('/', [AuthorController::class, 'index']);
+    });
+});
+
+
+// Route::group(['prefix' => 'v'], function () {
+//     Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'master'], function () {});
+
+//     Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'transaction'], function () {});
+
+//     Route::group(['prefix' => 'department'], function () {});
+// });
+
+
+// http://localhost:8000/api/v1/master/authors...
+// http://localhost:8000/api/v1/transaction/grn...
