@@ -18,6 +18,7 @@ class DocNumberSeeder extends Seeder
     {
         $default = [
             ['type' => 'Location', 'prefix' => 'L', 'last_id' => 0],
+            ['type' => 'BookType', 'prefix' => 'BT', 'last_id' => 0],
         ];
 
         foreach ($default as $key => $value) {

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\BookTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{loca_code}', [LocationController::class, 'show']);
         Route::post('/', [LocationController::class, 'store']);
         Route::put('/{loca_code}', [LocationController::class, 'update']);
+    });
+
+    // book type routes
+    Route::group(['prefix' => 'book-types'], function () {
+        Route::get('/generate-code', [BookTypeController::class, 'generateBookTypeCode']);
+        Route::get('/', [BookTypeController::class, 'index']);
+        Route::get('/{bkt_code}', [BookTypeController::class, 'show']);
+        Route::post('/', [BookTypeController::class, 'store']);
+        Route::put('/{bkt_code}', [BookTypeController::class, 'update']);
     });
 
     // author routes
