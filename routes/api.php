@@ -43,11 +43,11 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
     // location routes
     Route::group(['prefix' => 'locations'], function () {
-        Route::get('/', [LocationController::class, 'index']);
-        Route::post('/', [LocationController::class, 'store']);
-        Route::get('/{loca_code}', [LocationController::class, 'show']);
-        Route::put('/{loca_code}', [LocationController::class, 'update']);
         Route::get('/generate-code', [LocationController::class, 'generateCode']);
+        Route::get('/', [LocationController::class, 'index']);
+        Route::get('/{loca_code}', [LocationController::class, 'show']);
+        Route::post('/', [LocationController::class, 'store']);
+        Route::put('/{loca_code}', [LocationController::class, 'update']);
     });
 
     // author routes
