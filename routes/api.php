@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\RolePermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,25 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'author'], function () {
         Route::get('/', [AuthorController::class, 'index']);
     });
+
+    // Role and Permission routes
+    // Route::post('/role', [RolePermissionController::class, 'createRole']);
+    // Route::post('/permission', [RolePermissionController::class, 'createPermission']);
+    // Route::post('/role/permission', [RolePermissionController::class, 'assignPermissionToRole']);
+    // Route::post('/user/role', [RolePermissionController::class, 'assignRoleToUser']);
+});
+
+
+Route::middleware(['auth:sanctum', 'role:admin', 'prefix' => 'v1'])->group(function () {
+    // Roles
+    Route::get('/roles', [RolePermissionController::class, 'getRoles']);
+    Route::post('/roles', [RolePermissionController::class, 'createRole']);
+    Route::delete('/roles/{id}', [RolePermissionController::class, 'deleteRole']);
+
+    // Permissions
+    Route::get('/permissions', [RolePermissionController::class, 'getPermissions']);
+    Route::post('/permissions', [RolePermissionController::class, 'createPermission']);
+    Route::delete('/permissions/{id}', [RolePermissionController::class, 'deletePermission']);
 });
 
 
