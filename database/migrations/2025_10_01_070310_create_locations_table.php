@@ -20,7 +20,8 @@ class CreateLocationsTable extends Migration
             $table->enum('location_type', ['Branch', 'Exhibition'])->default('Branch');
             $table->text('delivery_address')->nullable();
             $table->integer('is_active')->default(1);
-            $table->integer('logged_in')->default(0);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

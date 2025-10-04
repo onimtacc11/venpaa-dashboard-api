@@ -21,7 +21,8 @@ class LocationResource extends JsonResource
             'location_type' => $this->location_type,
             'delivery_address' => $this->delivery_address,
             'is_active'     => $this->is_active,
-            'logged_in'     => $this->logged_in,
+            'created_by'    => $this->created_by,
+            'updated_by'    => $this->updated_by,
         ];
     }
 }
