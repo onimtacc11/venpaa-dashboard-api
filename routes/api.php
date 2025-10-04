@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
     // location routes
     Route::group(['prefix' => 'locations'], function () {
-        Route::get('/generate-code', [LocationController::class, 'generateCode']);
+        Route::get('/generate-code', [LocationController::class, 'generateLocationCode']);
         Route::get('/', [LocationController::class, 'index']);
         Route::get('/{loca_code}', [LocationController::class, 'show']);
         Route::post('/', [LocationController::class, 'store']);

@@ -3,35 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\DocNumber;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LocationResource;
 use App\Http\Requests\LocationRequest;
+use App\Http\Resources\LocationResource;
 
 class LocationController extends Controller
 {
-    private function generateLocationCode()
-    {
-        $lastLocation = Location::orderBy('id', 'desc')->first();
-
-        if (!$lastLocation || !$lastLocation->loca_code) {
-            return 'L001';
-        }
-
-        $lastNumber = intval(substr($lastLocation->loca_code, 1));
-        $newNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
-
-        return 'L' . $newNumber;
-    }
-
-    public function generateCode()
+    public function generateLocationCode(Request $request)
     {
         try {
-            $code = $this->generateLocationCode();
+            $doc = DocNumber::where('type', 'Location')->first();
+
+            if (!$doc) {
+                // If no Location document exists, create one
+                $doc = DocNumber::create([
+                    'type' => 'Location',
+                    'prefix' => 'L',
+                    'last_id' => 1
+                ]);
+            }
+
+            $nextId = $doc->last_id + 1;
+            $number = $doc->prefix . str_pad($nextId, 3, '0', STR_PAD_LEFT);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Code generated successfully',
-                'code' => $code
+                'code' => $number
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -79,7 +79,6 @@ class LocationController extends Controller
         }
     }
 
-
     public function store(LocationRequest $request)
     {
         try {
@@ -90,8 +89,14 @@ class LocationController extends Controller
                 $data['is_active'] = (int) filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
             }
 
-            $data['loca_code'] = $this->generateLocationCode();
+            $data['created_by'] = auth()->id();
             $location = Location::create($data);
+
+            $doc = DocNumber::where('type', 'Location')->first();
+            if ($doc) {
+                $doc->last_id += 1;
+                $doc->save();
+            }
 
             return response()->json([
                 'success' => true,
@@ -117,6 +122,7 @@ class LocationController extends Controller
             }
 
             $location = Location::where('loca_code', $loca_code)->firstOrFail();
+            $data['updated_by'] = auth()->id();
             $location->update($data);
 
             return response()->json([
