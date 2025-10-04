@@ -1,0 +1,27 @@
+<?php
+
+namespace Database\Seeders;
+
+use Carbon\Carbon;
+use App\Models\DocNumber;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class DocNumberSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $default = [
+            ['type' => 'Location', 'prefix' => 'L', 'last_id' => 0],
+        ];
+
+        foreach ($default as $key => $value) {
+            DocNumber::create($value);
+        }
+    }
+}
