@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookTypeResource extends JsonResource
+class DepartmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,11 @@ class BookTypeResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'bkt_code'     => $this->bkt_code,
-            'bkt_name'     => $this->bkt_name,
+            'id' => $this->id,
+            'dep_code'     => $this->dep_code,
+            'dep_name'     => $this->dep_name,
+            'dep_image'    => $this->dep_image,
+            'dep_image_url' => $this->dep_image ? asset('storage/' . $this->dep_image) : null,
             'created_by'    => $this->created_by,
             'updated_by'    => $this->updated_by,
         ];

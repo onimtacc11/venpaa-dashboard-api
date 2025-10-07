@@ -21,7 +21,7 @@ class LocationController extends Controller
                 $doc = DocNumber::create([
                     'type' => 'Location',
                     'prefix' => 'L',
-                    'last_id' => 1
+                    'last_id' => 4
                 ]);
             }
 

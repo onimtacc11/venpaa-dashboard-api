@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\BookTypeController;
+use App\Http\Controllers\DepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{bkt_code}', [BookTypeController::class, 'show']);
         Route::post('/', [BookTypeController::class, 'store']);
         Route::put('/{bkt_code}', [BookTypeController::class, 'update']);
+    });
+
+    // department routes
+    Route::group(['prefix' => 'departments'], function () {
+        Route::get('/generate-code', [DepartmentController::class, 'generateDepartmentCode']);
+        Route::get('/', [DepartmentController::class, 'index']);
+        Route::get('/{dep_code}', [DepartmentController::class, 'show']);
+        Route::post('/', [DepartmentController::class, 'store']);
+        Route::put('/{dep_code}', [DepartmentController::class, 'update']);
     });
 
     // author routes
