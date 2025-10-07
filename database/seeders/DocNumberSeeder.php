@@ -17,8 +17,8 @@ class DocNumberSeeder extends Seeder
     public function run()
     {
         $default = [
-            ['type' => 'Location', 'prefix' => 'L', 'last_id' => 0],
-            ['type' => 'BookType', 'prefix' => 'BT', 'last_id' => 0],
+            ['type' => 'Location', 'prefix' => 'L', 'last_id' => 4],
+            ['type' => 'BookType', 'prefix' => 'BT', 'last_id' => 3],
         ];
 
         foreach ($default as $key => $value) {

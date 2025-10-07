@@ -21,7 +21,7 @@ class BookTypeController extends Controller
                 $doc = DocNumber::create([
                     'type' => 'BookType',
                     'prefix' => 'BT',
-                    'last_id' => 1
+                    'last_id' => 3
                 ]);
             }
 
