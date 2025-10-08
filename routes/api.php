@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\BookTypeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SubCategoryController;
 
@@ -78,6 +79,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{scat_code}', [SubCategoryController::class, 'show']);
         Route::post('/', [SubCategoryController::class, 'store']);
         Route::put('/{scat_code}', [SubCategoryController::class, 'update']);
+    });
+
+    // category routes
+    Route::group(['prefix' => 'categories'], function () {
+        Route::get('/generate-code', [CategoryController::class, 'generateCategoryCode']);
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/{cat_code}', [CategoryController::class, 'show']);
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{cat_code}', [CategoryController::class, 'update']);
     });
 
     // author routes
