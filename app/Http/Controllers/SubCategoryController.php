@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
 use App\Models\DocNumber;
-use Illuminate\Http\Request;
+use App\Models\SubCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LocationRequest;
-use App\Http\Resources\LocationResource;
+use App\Http\Requests\SubCategoryRequest;
+use App\Http\Resources\SubCategoryResource;
 
-class LocationController extends Controller
+class SubCategoryController extends Controller
 {
-    public function generateLocationCode(Request $request)
+    public function generateSubCategoryCode()
     {
         try {
-            $doc = DocNumber::where('type', 'Location')->first();
+            $doc = DocNumber::where('type', 'SubCategory')->first();
 
             if (!$doc) {
-                // If no Location document exists, create one
+                // If no SubCategory document exists, create one
                 $doc = DocNumber::create([
-                    'type' => 'Location',
-                    'prefix' => 'L',
-                    'last_id' => 4
+                    'type' => 'SubCategory',
+                    'prefix' => 'SC',
+                    'last_id' => 0
                 ]);
             }
 
@@ -45,54 +44,56 @@ class LocationController extends Controller
     public function index()
     {
         try {
-            $locations = Location::where('is_active', 1)->get();
+            $subCategories = SubCategory::all();
             return response()->json([
                 'success' => true,
-                'message' => 'Locations fetched successfully',
-                'data' => LocationResource::collection($locations)
+                'message' => 'SubCategories fetched successfully',
+                'data' => SubCategoryResource::collection($subCategories)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch locations',
+                'message' => 'Failed to fetch SubCategories',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function show($loca_code)
+    public function show($scat_code)
     {
         try {
-            $location = Location::where('loca_code', $loca_code)->firstOrFail();
-
+            $subCategory = SubCategory::where('scat_code', $scat_code)->firstOrFail();
             return response()->json([
                 'success' => true,
-                'message' => 'Location fetched successfully',
-                'data' => new LocationResource($location)
+                'message' => 'SubCategory fetched successfully',
+                'data' => new SubCategoryResource($subCategory)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Location not found',
+                'message' => 'SubCategory not found',
                 'error' => $e->getMessage()
             ], 404);
         }
     }
 
-    public function store(LocationRequest $request)
+    public function store(SubCategoryRequest $request)
     {
         try {
             $data = $request->validated();
 
-            // Handle boolean conversion from FormData
-            if (isset($data['is_active'])) {
-                $data['is_active'] = (int) filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
+            // Check if SubCategory code already exists
+            if (SubCategory::where('scat_code', $data['scat_code'])->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'SubCategory code already exists'
+                ], 422);
             }
 
             $data['created_by'] = auth()->id();
-            $location = Location::create($data);
+            $subCategory = SubCategory::create($data);
 
-            $doc = DocNumber::where('type', 'Location')->first();
+            $doc = DocNumber::where('type', 'SubCategory')->first();
             if ($doc) {
                 $doc->last_id += 1;
                 $doc->save();
@@ -100,40 +101,35 @@ class LocationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Location created successfully',
-                'data' => new LocationResource($location)
+                'message' => 'SubCategory created successfully',
+                'data' => new SubCategoryResource($subCategory)
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create location',
+                'message' => 'Failed to create SubCategory',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(LocationRequest $request, $loca_code)
+    public function update(SubCategoryRequest $request, $scat_code)
     {
         try {
+            $subCategory = SubCategory::where('scat_code', $scat_code)->firstOrFail();
             $data = $request->validated();
-
-            if (isset($data['is_active'])) {
-                $data['is_active'] = (int) filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
-            }
-
-            $location = Location::where('loca_code', $loca_code)->firstOrFail();
             $data['updated_by'] = auth()->id();
-            $location->update($data);
+            $subCategory->update($data);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Location updated successfully',
-                'data' => new LocationResource($location)
+                'message' => 'SubCategory updated successfully',
+                'data' => new SubCategoryResource($subCategory)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update location',
+                'message' => 'Failed to update SubCategory',
                 'error' => $e->getMessage()
             ], 500);
         }

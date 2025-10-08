@@ -34,7 +34,6 @@ class LocationRequest extends FormRequest
             ],
             'delivery_address' => 'nullable|string|max:255',
             'is_active' => 'boolean',
-            'logged_in' => 'boolean',
         ];
     }
 }

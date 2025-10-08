@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
+use App\Models\BookType;
 use App\Models\DocNumber;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LocationRequest;
-use App\Http\Resources\LocationResource;
+use App\Http\Requests\BookTypeRequest;
+use App\Http\Resources\BookTypeResource;
 
-class LocationController extends Controller
+class BookTypeController extends Controller
 {
-    public function generateLocationCode(Request $request)
+    public function generateBookTypeCode(Request $request)
     {
         try {
-            $doc = DocNumber::where('type', 'Location')->first();
+            $doc = DocNumber::where('type', 'BookType')->first();
 
             if (!$doc) {
-                // If no Location document exists, create one
+                // If no book type document exists, create one
                 $doc = DocNumber::create([
-                    'type' => 'Location',
-                    'prefix' => 'L',
-                    'last_id' => 4
+                    'type' => 'BookType',
+                    'prefix' => 'BT',
+                    'last_id' => 3
                 ]);
             }
 
@@ -45,54 +45,48 @@ class LocationController extends Controller
     public function index()
     {
         try {
-            $locations = Location::where('is_active', 1)->get();
+            $bookTypes = BookType::all();
             return response()->json([
                 'success' => true,
-                'message' => 'Locations fetched successfully',
-                'data' => LocationResource::collection($locations)
+                'message' => 'Book types fetched successfully',
+                'data' => BookTypeResource::collection($bookTypes)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch locations',
+                'message' => 'Failed to fetch book types',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function show($loca_code)
+    public function show($bkt_code)
     {
         try {
-            $location = Location::where('loca_code', $loca_code)->firstOrFail();
+            $bookType = BookType::where('bkt_code', $bkt_code)->firstOrFail();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Location fetched successfully',
-                'data' => new LocationResource($location)
+                'message' => 'Book type fetched successfully',
+                'data' => new BookTypeResource($bookType)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Location not found',
+                'message' => 'Book type not found',
                 'error' => $e->getMessage()
             ], 404);
         }
     }
 
-    public function store(LocationRequest $request)
+    public function store(BookTypeRequest $request)
     {
         try {
             $data = $request->validated();
-
-            // Handle boolean conversion from FormData
-            if (isset($data['is_active'])) {
-                $data['is_active'] = (int) filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
-            }
-
             $data['created_by'] = auth()->id();
-            $location = Location::create($data);
+            $bookType = BookType::create($data);
 
-            $doc = DocNumber::where('type', 'Location')->first();
+            $doc = DocNumber::where('type', 'BookType')->first();
             if ($doc) {
                 $doc->last_id += 1;
                 $doc->save();
@@ -100,40 +94,35 @@ class LocationController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Location created successfully',
-                'data' => new LocationResource($location)
+                'message' => 'Book type created successfully',
+                'data' => new BookTypeResource($bookType)
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create location',
+                'message' => 'Failed to create book type',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(LocationRequest $request, $loca_code)
+    public function update(BookTypeRequest $request, $bkt_code)
     {
         try {
             $data = $request->validated();
-
-            if (isset($data['is_active'])) {
-                $data['is_active'] = (int) filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
-            }
-
-            $location = Location::where('loca_code', $loca_code)->firstOrFail();
+            $bookType = BookType::where('bkt_code', $bkt_code)->firstOrFail();
             $data['updated_by'] = auth()->id();
-            $location->update($data);
+            $bookType->update($data);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Location updated successfully',
-                'data' => new LocationResource($location)
+                'message' => 'Book type updated successfully',
+                'data' => new BookTypeResource($bookType)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update location',
+                'message' => 'Failed to update book type',
                 'error' => $e->getMessage()
             ], 500);
         }
