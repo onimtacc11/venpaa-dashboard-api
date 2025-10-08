@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{dep_code}', [DepartmentController::class, 'show']);
         Route::post('/', [DepartmentController::class, 'store']);
         Route::put('/{dep_code}', [DepartmentController::class, 'update']);
+    });
+
+    // sub category routes
+    Route::group(['prefix' => 'sub-categories'], function () {
+        Route::get('/generate-code', [SubCategoryController::class, 'generateSubCategoryCode']);
+        Route::get('/', [SubCategoryController::class, 'index']);
+        Route::get('/{scat_code}', [SubCategoryController::class, 'show']);
+        Route::post('/', [SubCategoryController::class, 'store']);
+        Route::put('/{scat_code}', [SubCategoryController::class, 'update']);
     });
 
     // author routes
