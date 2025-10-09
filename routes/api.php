@@ -70,6 +70,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{dep_code}', [DepartmentController::class, 'show']);
         Route::post('/', [DepartmentController::class, 'store']);
         Route::put('/{dep_code}', [DepartmentController::class, 'update']);
+        Route::get('/{dep_code}/categories', [DepartmentController::class, 'categories']);
     });
 
     // sub category routes
