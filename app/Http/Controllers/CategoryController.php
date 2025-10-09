@@ -45,7 +45,7 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            $categories = Category::all();
+            $categories = Category::with('subCategories')->get();
             return response()->json([
                 'success' => true,
                 'message' => 'Categories fetched successfully',
