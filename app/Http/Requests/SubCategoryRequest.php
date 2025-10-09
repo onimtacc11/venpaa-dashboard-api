@@ -26,6 +26,8 @@ class SubCategoryRequest extends FormRequest
         return [
             'scat_code' => 'required|string|max:255',
             'scat_name' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+            'cat_code' => 'required|string|max:255',
         ];
     }
 }
