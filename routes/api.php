@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SubCategoryController;
 
@@ -89,6 +90,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
         Route::get('/{cat_code}', [CategoryController::class, 'show']);
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{cat_code}', [CategoryController::class, 'update']);
+    });
+
+    // publisher routes
+    Route::group(['prefix' => 'publishers'], function () {
+        Route::get('/generate-code', [PublisherController::class, 'generatePublisherCode']);
+        Route::get('/', [PublisherController::class, 'index']);
+        Route::get('/{pub_code}', [PublisherController::class, 'show']);
+        Route::post('/', [PublisherController::class, 'store']);
+        Route::put('/{pub_code}', [PublisherController::class, 'update']);
     });
 
     // author routes
